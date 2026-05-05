@@ -1,0 +1,32 @@
+{
+  "saudi_arabia": {
+    "country_name": "Saudi Arabia",
+    "source": "user_curated_cultural_values",
+    "content": "1. Greetings are formal and often extended, reflecting respect and relationship-building rather than efficiency.\n2. Social interactions are guided by Islamic values, emphasizing humility, respect, and moral conduct.\n3. Hospitality is a core virtue; generously hosting guests is seen as a moral obligation and a source of honor.\n4. Strong respect for elders and authority reflects a hierarchical and tradition-oriented society.\n5. Modesty in dress and behavior is valued, signaling dignity and adherence to religious norms.\n6. Public harmony is important; open criticism or confrontation is avoided to preserve social cohesion.\n7. Gender roles and interactions may be structured or separated, reflecting cultural and religious norms.\n8. Trust is built slowly through repeated interactions and personal relationships rather than quick transactions.\n9. Generosity is admired, but excessive display of wealth in personal exchanges may be discouraged.\n10. Religion is deeply integrated into daily life, influencing schedules, decisions, and social expectations."
+  },
+  "south_africa": {
+    "country_name": "South Africa",
+    "source": "user_curated_cultural_values",
+    "content": "1. Greetings are essential and often involve genuine inquiries, reflecting the importance of human connection.\n2. The philosophy of Ubuntu (\"I am because we are\") emphasizes interdependence and collective identity.\n3. Respect for elders reflects both cultural tradition and community structure.\n4. Hospitality is an expression of community values and mutual care.\n5. Social interactions often prioritize relationships over strict efficiency or time.\n6. Communication may be indirect to maintain harmony and avoid conflict.\n7. Diversity is central; sensitivity to cultural differences is necessary in daily life.\n8. Community support and sharing are seen as moral responsibilities.\n9. Trust is built through consistent personal engagement rather than formal agreements alone.\n10. Identity is shaped by both individual experience and collective history."
+  },
+  "united_states_of_america": {
+    "country_name": "United States of America",
+    "source": "user_curated_cultural_values",
+    "content": "1. Individualism is a central value; people are expected to pursue personal goals and independence.\n2. Communication tends to be direct and explicit, reflecting a preference for clarity and efficiency.\n3. Equality is emphasized, leading to relatively informal interactions across status levels.\n4. Time is treated as a resource; punctuality and efficiency are highly valued.\n5. Self-expression and voicing opinions are encouraged as signs of confidence and autonomy.\n6. Personal achievement and initiative are seen as indicators of success and character.\n7. Social interactions often balance friendliness with respect for personal boundaries.\n8. Informality in language and behavior reflects a cultural emphasis on approachability.\n9. Fairness and rule-based systems are valued in both social and institutional contexts.\n10. Cultural diversity is recognized, but individuals are expected to define their own identity."
+  },
+  "japan": {
+    "country_name": "Japan",
+    "source": "user_curated_cultural_values",
+    "content": "1. Social harmony (wa) is a fundamental value, guiding behavior toward group cohesion.\n2. Indirect communication is preferred to avoid conflict and maintain relationships.\n3. Respect is expressed through hierarchical awareness and appropriate behavior, such as bowing and language.\n4. Punctuality reflects responsibility and respect for others' time.\n5. Group consensus is prioritized over individual opinion in decision-making.\n6. Modesty and self-restraint are valued, discouraging overt self-promotion.\n7. Silence can carry meaning, reflecting thoughtfulness rather than disengagement.\n8. Rituals, such as gift-giving and greetings, reinforce social order and mutual respect.\n9. Cleanliness and order are seen as reflections of personal discipline and social responsibility.\n10. Social roles and expectations are clearly defined and often carefully followed."
+  },
+  "india": {
+    "country_name": "India",
+    "source": "user_curated_cultural_values",
+    "content": "1. Respect for elders is a core value shaping both communication and decision-making.\n2. Social behavior is influenced by religious and cultural traditions.\n3. Collectivism is emphasized; family and community often take priority over the individual.\n4. Hospitality is deeply valued; guests are treated with exceptional care, often summarized as Atithi Devo Bhava.\n5. Indirect communication helps maintain respect and avoid social friction.\n6. Social hierarchy may influence interactions and expectations.\n7. Rituals and customs play a central role in structuring daily life.\n8. Modesty and humility are generally appreciated in behavior.\n9. Flexibility in time reflects a relationship-oriented rather than schedule-oriented mindset.\n10. Moral and social duties, or dharma, influence personal and collective decisions."
+  },
+  "brazil": {
+    "country_name": "Brazil",
+    "source": "user_curated_cultural_values",
+    "content": "1. Warmth and emotional expressiveness are central to social interaction.\n2. Personal relationships often take precedence over formal rules or structures.\n3. Physical closeness and touch reflect friendliness and trust.\n4. Social flexibility, such as flexibility with time, reflects a relaxed and relationship-focused mindset.\n5. Communication tends to be expressive, emotional, and engaging.\n6. Family and close networks are key sources of identity and support.\n7. Social hierarchy can exist informally through relationships and status.\n8. Sharing resources among close groups reflects communal values.\n9. Enjoyment of life and social connection are important cultural priorities.\n10. Respect is often demonstrated through warmth and inclusion rather than formality."
+  }
+}
