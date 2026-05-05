@@ -1,3 +1,17 @@
+'''
+A_interaction_debate_only_persona
+= Korea persona + target persona와의 debate transcript 원문
+
+B_interaction_debate_self_reflection_persona
+= Korea persona + target persona와의 debate 후 self-reflection memory
+
+C_persona_only
+= Korea persona only
+
+D_persona_json_prompt_injection
+= Korea persona + JSON cultural etiquette background 직접 주입
+
+'''
 import argparse
 import datetime
 import json
@@ -5,9 +19,6 @@ import os
 
 import Qwen_Normad_Debate as debate
 import qwen_no_rot_oeg_mcs_after_interaction as base
-import qwen_no_rot_oeg_mcs_after_interaction_norm_control as norm_control
-
-
 def normalize_key(value):
     return base.exp.normalize_country_key(str(value))
 
@@ -87,14 +98,22 @@ def build_reflection(args, tokenizer, model, country_name, debate_transcript):
     )
 
 
-def build_debate_only_korea_system_prompt(target_country, target_norms, debate_transcript):
-    norm_text = "\n".join(f"- {norm}" for norm in target_norms)
+def build_debate_reflection_korea_system_prompt(target_country, reflection):
     return f"""You are someone who was born and brought up in Korea.
 You currently live in Korea.
 You recently completed a cross-cultural interaction with someone from {target_country}.
 
-Important {target_country} cultural norms to consider:
-{norm_text}
+[Self-reflection after the NormAd cross-cultural interaction with a {target_country} agent]
+{reflection}
+
+Use this self-reflection when judging later {target_country} social
+acceptability questions."""
+
+
+def build_debate_only_korea_system_prompt(target_country, debate_transcript):
+    return f"""You are someone who was born and brought up in Korea.
+You currently live in Korea.
+You recently completed a cross-cultural interaction with someone from {target_country}.
 
 [Transcript from the NormAd cross-cultural interaction with a {target_country} agent]
 {debate_transcript}
@@ -102,6 +121,23 @@ Important {target_country} cultural norms to consider:
 Use the transcript directly when judging later {target_country} social
 acceptability questions. Do not assume there was a separate self-reflection
 summary or additional memory beyond this transcript."""
+
+
+def build_persona_only_korea_system_prompt():
+    return base.exp.PERSONAS["korea"]
+
+
+def build_json_prompt_injection_korea_system_prompt(target_country, json_agent):
+    content = json_agent.get("content") or json_agent.get("system_prompt", "")
+    return f"""You are someone who was born and brought up in Korea.
+You currently live in Korea.
+
+[JSON cultural etiquette background for {target_country}]
+{content}
+
+Use the JSON cultural etiquette background when judging later {target_country}
+social acceptability questions. You did not complete a cross-cultural
+interaction and you do not have a self-reflection memory."""
 
 
 def build_rot_debate_transcript_without_gold(history, agent_a_name, agent_b_name):
@@ -203,11 +239,10 @@ def build_condition_specs(args, tokenizer, model, country_key, json_agents):
         args.test_per_label,
         args.seed,
     )
-    target_norms = base.abcd.load_cp_norms(args.cp_norm_file, cp_country, args.cp_norm_limit)
     json_agent = get_json_agent(json_agents, country_key, country_name, cp_country)
 
     print("\n" + "=" * 60)
-    print(f"NormAd interaction-persona vs JSON-agent: {country_name} ({country_key})")
+    print(f"NormAd interaction / reflection / persona / JSON: {country_name} ({country_key})")
     print("=" * 60)
 
     a_history, a_transcript, a_reflection = build_interaction_memory(
@@ -223,51 +258,25 @@ def build_condition_specs(args, tokenizer, model, country_key, json_agents):
         args,
         country_key,
         country_name,
-        "A_interaction_korea_target_persona",
+        "target_persona_interaction",
         a_history,
         a_transcript,
         a_reflection,
     )
 
-    b_history, b_transcript, b_reflection = build_interaction_memory(
-        args,
-        tokenizer,
-        model,
-        country_name,
-        adapt_rows,
-        json_agent["system_prompt"],
-        "json_agent",
-    )
-    save_condition_interaction_artifacts(
-        args,
-        country_key,
-        country_name,
-        "B_interaction_korea_json_agent",
-        b_history,
-        b_transcript,
-        b_reflection,
-    )
-
     condition_specs = {
-        "A_interaction_korea_target_persona": base.abcd.build_interaction_korea_system_prompt(
+        "A_interaction_debate_only_persona": build_debate_only_korea_system_prompt(
             cp_country,
-            target_norms,
-            a_reflection,
-        ),
-        "A_debate_only_korea_target_persona": build_debate_only_korea_system_prompt(
-            cp_country,
-            target_norms,
             a_transcript,
         ),
-        "B_interaction_korea_json_agent": base.abcd.build_interaction_korea_system_prompt(
+        "B_interaction_debate_self_reflection_persona": build_debate_reflection_korea_system_prompt(
             cp_country,
-            target_norms,
-            b_reflection,
+            a_reflection,
         ),
-        "B_debate_only_korea_json_agent": build_debate_only_korea_system_prompt(
+        "C_persona_only": build_persona_only_korea_system_prompt(),
+        "D_persona_json_prompt_injection": build_json_prompt_injection_korea_system_prompt(
             cp_country,
-            target_norms,
-            b_transcript,
+            json_agent,
         ),
     }
     return country_name, cp_country, condition_specs
@@ -294,7 +303,7 @@ def run_one_country(args, tokenizer, model, country_key, json_agents):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--normad_input_path", default="data/normad.jsonl")
-    parser.add_argument("--output_dir", default="outputs/normad_rot_interaction_persona_vs_json_agent_qwen25_14b")
+    parser.add_argument("--output_dir", default="outputs/normad_interaction_reflection_persona_json_prompt_qwen25_14b")
     parser.add_argument("--model_id", default="Qwen/Qwen2.5-14B-Instruct")
     parser.add_argument("--cache_dir", default=os.environ.get("HF_HOME", base.exp.DEFAULT_CACHE_DIR))
     parser.add_argument("--gpu_only", action="store_true")
