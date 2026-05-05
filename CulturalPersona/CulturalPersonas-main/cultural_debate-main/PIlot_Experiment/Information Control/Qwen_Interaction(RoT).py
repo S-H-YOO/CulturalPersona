@@ -1,3 +1,10 @@
+'''
+A : RoT X + [Debate + Self Reflection] + No Json
+B : RoT X + [Debate] + No Json
+C : RoT X + Json
+A : RoT O + [Debate + Self Reflection] + No Json
+A : RoT O + [Debate] + No Json
+'''
 import argparse
 import datetime
 import os
