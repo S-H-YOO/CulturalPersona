@@ -15,6 +15,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PYTHON_BIN="${PYTHON_BIN:-python}"
 N_RUNS="${N_RUNS:-1}"
+DATASET="${DATASET:-w2d25}"
 MODELS=(
   "zai-org/GLM-4-9B-0414"
   "meta-llama/Llama-3.1-8B-Instruct"
@@ -32,7 +33,22 @@ fi
 
 model="${MODELS[$model_index]}"
 seed=$((42 + repeat_index))
-out="${ROOT}/outputs/repeat_${repeat_index}"
+case "${DATASET}" in
+  w2d25)
+    items="${ROOT}/data/task3_scenarios_500.csv"
+    definitions="${ROOT}/data/value_pairs_25.csv"
+    out="${ROOT}/outputs/repeat_${repeat_index}"
+    ;;
+  selected20)
+    items="${ROOT}/data/task3_scenarios_400_selected.csv"
+    definitions="${ROOT}/data/value_pairs_20_selected.csv"
+    out="${ROOT}/outputs/selected20/repeat_${repeat_index}"
+    ;;
+  *)
+    echo "Unknown DATASET=${DATASET}; use w2d25 or selected20" >&2
+    exit 2
+    ;;
+esac
 
 mkdir -p "${ROOT}/logs" "${out}"
 export TOKENIZERS_PARALLELISM=false
@@ -41,6 +57,8 @@ export PYTHONUNBUFFERED=1
 "${PYTHON_BIN}" "${ROOT}/src/run_tasks123.py" \
   --model "${model}" \
   --out-dir "${out}" \
+  --items "${items}" \
+  --definitions "${definitions}" \
   --tasks 1 2 3 \
   --task1-upper-prompts exact_only \
   --t2-question-mode importance_only \
@@ -53,4 +71,3 @@ export PYTHONUNBUFFERED=1
   --n-null 2000 \
   --batch-size 24 \
   --seed "${seed}"
-

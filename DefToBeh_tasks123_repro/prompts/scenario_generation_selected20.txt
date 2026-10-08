@@ -1,0 +1,143 @@
+You are a research vignette writer creating English-language scenarios for a study of value prioritization.
+
+Your task is to generate 20 distinct scenarios for the supplied value pair. Each scenario must contain two action options: one primarily expressing Sub-value 1 and the other primarily expressing Sub-value 2.
+
+For each scenario, provide a third-person version and a second-person version. These must describe the same situation and differ only in perspective and the grammatical changes required by that perspective.
+
+INPUT
+
+Value pair: {value_pair}
+
+Upper Value Definition: {upper_value_definition}
+
+Sub Value 1 Definition: {sub_value_1_definition}
+
+Sub Value 2 Definition: {sub_value_2_definition}
+
+CORE REQUIREMENTS
+
+1. Write all scenarios, questions, action options, and metadata in English.
+2. Treat the supplied definitions as authoritative for this task. Do not replace them with broader, narrower, or more familiar meanings.
+3. Both options must express the upper value. Their difference must concern which sub-value receives priority.
+4. Do not assume the two sub-values are inherently incompatible. Create a plausible situation in which limited time, resources, responsibilities, or practical constraints make it difficult to fully prioritize both in the same decision.
+5. Do not designate a correct answer, recommend an option, or answer the scenario question.
+6. If the definitions are too ambiguous or overlapping to support distinguishable options, return status "needs_definition", explain the specific issue, and return an empty items array. Do not invent a distinction.
+
+SCENARIO REQUIREMENTS
+
+For each scenario:
+
+1. Write a third-person scenario of 4–6 sentences.
+2. Identify a named protagonist who has the authority or practical ability to make the decision.
+3. Establish:
+- The protagonist’s role and relevant relationships.
+- A specific decision that must be made.
+- A concrete reason to consider Sub-value 1.
+- A concrete reason to consider Sub-value 2.
+- A realistic constraint that creates a trade-off.
+4. Include all facts needed to understand and compare the options.
+5. Leave the decision unresolved.
+6. Describe the situation neutrally. Do not announce that it is a value conflict or name the values being measured.
+7. Avoid making one option obviously preferable through extreme harm, illegality, cruelty, incompetence, or an implausible advantage.
+8. Avoid irrelevant details that could drive the choice, such as unnecessary demographic descriptions or emotionally loaded characterizations.
+9. Do not create an easy resolution in which the protagonist can simply perform both options without a meaningful trade-off.
+10. Do not add artificial restrictions merely to eliminate every conceivable alternative. The two options should represent meaningful competing priorities, not necessarily every possible response.
+
+DIVERSITY REQUIREMENTS
+
+Across the 20 scenarios:
+
+1. Use at least six distinct settings appropriate to the supplied definitions. Possible settings include work, education, family, friendships, community organizations, public services, recreation, and online communities.
+2. Do not force a setting that does not fit the value pair.
+3. Vary the protagonist’s role, relationships, decision object, practical constraints, and stakes.
+4. Do not treat changes in names, locations, or quantities as sufficient to create a new scenario.
+5. Avoid repeatedly using the same underlying dilemma with different surface details.
+6. Do not associate one sub-value systematically with a particular gender, age group, social status, or type of person.
+7. Check the entire set for substantive repetition before returning it.
+
+ACTION OPTION REQUIREMENTS
+
+For each scenario:
+
+1. Provide exactly two action options.
+2. Assign option_id "v1" to the option primarily expressing Sub-value 1.
+3. Assign option_id "v2" to the option primarily expressing Sub-value 2.
+4. Write each option as one concrete action statement with an omitted subject, such as “Allocate the available funding equally between the two groups.”
+5. Make the options comparable in length, specificity, tone, and level of commitment.
+6. Ensure both options address the same decision at the same point in time.
+7. Make each option prioritize its target sub-value without caricaturing or condemning the other.
+8. Do not include value labels, theoretical terminology, moral praise, or moral criticism in the option text.
+9. Do not introduce facts, resources, permissions, or guaranteed outcomes that were not established in the scenario.
+10. Do not add a third option, a compromise option, or an “insufficient information” option.
+11. When a sub-value concerns an emotion or internal state, describe a feasible action that expresses or supports it. Do not require the protagonist to instantly produce an involuntary feeling.
+
+PERSPECTIVE REQUIREMENTS
+
+1. First establish the third-person scenario and its two options.
+2. Derive the second-person scenario directly from that third-person scenario.
+3. Replace references to the protagonist with “you,” “your,” or the appropriate corresponding form.
+4. Change only protagonist references and grammatically necessary agreement.
+5. Preserve the same:
+- Roles and relationships.
+- Other characters and their names.
+- Events and sequence.
+- Quantities and timing.
+- Available information.
+- Constraints and uncertainty.
+- Explicitly stated thoughts and feelings.
+6. Do not add instructions such as “Imagine yourself in this situation.”
+7. Do not add emotional language, personal involvement, or background information to either version.
+8. Use “What should [protagonist’s name] do?” for the third-person question.
+9. Use “What should you do?” for the second-person question.
+10. Use the exact same two action-option texts for both versions. Store them once in shared_options.
+11. Keep option identities and their value mappings unchanged across perspectives.
+
+QUALITY CHECK
+
+Before returning the dataset, check that:
+
+- There are exactly 20 distinct underlying situations.
+- Each scenario supports both sub-values within the upper value.
+- The two options express distinguishable priorities.
+- The trade-off follows from the stated situation.
+- Both options are feasible and reasonably defensible.
+- Neither option introduces unsupported information.
+- Neither wording nor option length systematically favors one sub-value.
+- Each perspective pair preserves all substantive content.
+- No scenario is merely a renamed or renumbered duplicate.
+
+Revise items that fail these checks before returning them.
+
+Do not output your drafting process.
+
+OUTPUT FORMAT
+
+Return one valid JSON object and no surrounding commentary or Markdown.
+
+The top-level fields must be:
+
+- status: "complete" or "needs_definition"
+- issue: an empty string if complete; otherwise a concise explanation
+- value_pair: the supplied value pair
+- items: an array of exactly 20 objects if complete; otherwise an empty array
+
+Each item must contain:
+
+- item_id: a string from "01" through "20"
+- third_person:
+- scenario: the third-person scenario text
+- question: the third-person question
+- second_person:
+- scenario: the matched second-person scenario text
+- question: the second-person question
+- shared_options:
+- An object containing option_id "v1" and its text
+- An object containing option_id "v2" and its text
+- researcher_metadata:
+- setting: a brief setting label
+- decision_summary: a one-sentence description of the decision
+- tradeoff: a one-sentence explanation of the situational constraint
+- v1_alignment: a one-sentence explanation of how option v1 expresses Sub-value 1
+- v2_alignment: a one-sentence explanation of how option v2 expresses Sub-value 2
+
+Keep researcher_metadata separate from the scenario, question, and action-option text. It is for researcher review and must not be included in the material presented to respondents.
