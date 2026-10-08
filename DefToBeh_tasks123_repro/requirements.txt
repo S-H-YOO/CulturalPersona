@@ -1,0 +1,7 @@
+accelerate>=1.0
+numpy>=1.26
+pandas>=2.0
+sentence-transformers>=3.0
+torch>=2.4
+transformers>=4.57
+
